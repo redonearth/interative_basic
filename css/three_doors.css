@@ -60,9 +60,9 @@
 .door:nth-child(3) .door-body {
   background: rgba(0, 0, 255, 0.7);
 }
-.door:hover .door-body {
+.door-opened .door-body {
   transform: perspective(800px) rotateY(-100deg);
 }
-.door:hover .ilbuni {
+.door-opened .ilbuni {
   transform: translate3d(0, 0, 0);
 }
