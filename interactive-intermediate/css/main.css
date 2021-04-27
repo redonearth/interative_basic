@@ -27,11 +27,19 @@ body {
   transform-style: preserve-3d;
   transition: 1s;
 }
-.page.page-flipped {
+.page:nth-child(1) {
+  z-index: 2;
+  transform-origin: left;
+}
+.page:nth-child(3) {
+  z-index: 1;
+  transform-origin: right;
+}
+.page:nth-child(1).page-flipped {
   transform: rotateY(-150deg);
 }
-.page:nth-child(1) {
-  transform-origin: left;
+.page:nth-child(3).page-flipped {
+  transform: rotateY(150deg);
 }
 .page-face {
   position: absolute;
