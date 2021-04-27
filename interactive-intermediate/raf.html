@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>requestAnimationFrame</title>
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        margin: auto;
+      }
+      .ilbuni {
+        position: absolute;
+        width: 100px;
+        left: 50%;
+        bottom: 0;
+        margin-left: -50px;
+      }
+      .value {
+        margin-top: -5rem;
+        font-size: 7rem;
+        font-weight: 100;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <img class="ilbuni" src="./images/ilbuni.gif" alt=" 일분이" />
+    <div class="value">requestAnimationFrame</div>
+
+    <script>
+      const ilbuni = document.querySelector(".ilbuni");
+      const value = document.querySelector(".value");
+      let yPos = 0;
+      let rafId;
+
+      function render() {
+        value.innerHTML = yPos;
+        ilbuni.style.transform = `translateY(${-yPos}px)`;
+        yPos += 10;
+
+        rafId = requestAnimationFrame(render);
+
+        if (yPos > 770) {
+          cancelAnimationFrame(rafId);
+        }
+      }
+      render();
+
+      window.addEventListener("click", () => {
+        cancelAnimationFrame(rafId);
+      });
+    </script>
+  </body>
+</html>
