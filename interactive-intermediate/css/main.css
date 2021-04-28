@@ -9,6 +9,8 @@ body {
 }
 .hand {
   position: absolute;
+  left: 70%;
+  top: 70%;
   z-index: 10;
   width: 400px;
 }

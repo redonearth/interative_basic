@@ -55,7 +55,7 @@
   }
 
   function zoomOut() {
-    leaflet.style.transform = "translate3d(0,0,0)";
+    leaflet.style.transform = "translate3d(0, 0, 0)";
     if (currentMenu) {
       document.body.classList.remove("zoom-in");
       currentMenu.classList.remove("current-menu");
@@ -66,8 +66,8 @@
   function render() {
     distX = targetPos.x - handPos.x;
     distY = targetPos.y - handPos.y;
-    handPos.x = handPos.x + distX * 0.1;
-    handPos.y = handPos.y + distY * 0.1;
+    handPos.x = handPos.x + distX * 0.07;
+    handPos.y = handPos.y + distY * 0.07;
     hand.style.transform = `
       translate(${handPos.x - 60}px, ${handPos.y + 30}px)
     `;
@@ -104,7 +104,7 @@
   });
 
   window.addEventListener("mousemove", (e) => {
-    targetPos.x = e.clientX;
-    targetPos.y = e.clientY;
+    targetPos.x = e.clientX - window.innerWidth * 0.7;
+    targetPos.y = e.clientY - window.innerHeight * 0.7;
   });
 })();
