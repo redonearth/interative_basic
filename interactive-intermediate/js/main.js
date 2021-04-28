@@ -71,6 +71,7 @@
     let closeBtnElem = getTarget(e.target, "close-btn");
     if (closeBtnElem) {
       closeLeaflet();
+      zoomOut();
     }
 
     let menuItemElem = getTarget(e.target, "menu-item");
