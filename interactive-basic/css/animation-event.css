@@ -1,0 +1,14 @@
+.ball {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  /* margin: -15px 0 0 -15px; */
+  border-radius: 50%;
+  background: red;
+  transition: 1s;
+}
+.ball.end {
+  background: dodgerblue;
+}
