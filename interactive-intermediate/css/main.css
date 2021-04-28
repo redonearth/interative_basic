@@ -102,6 +102,9 @@ body {
   right: 10px;
   top: 10px;
 }
+.current-menu .back-btn {
+  display: inline-block;
+}
 .menu-item-photo {
   width: 20%;
   padding-bottom: 20%;
