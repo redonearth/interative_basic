@@ -1,8 +1,14 @@
 (() => {
+  const hand = document.querySelector(".hand");
   const leaflet = document.querySelector(".leaflet");
   const pageElems = document.querySelectorAll(".page");
   let pageCount = 0;
   let currentMenu;
+
+  const handPos = { x: 0, y: 0 };
+  const targetPos = { x: 0, y: 0 };
+  let distX;
+  let distY;
 
   function getTarget(elem, className) {
     while (!elem.classList.contains(className)) {
@@ -57,6 +63,18 @@
     }
   }
 
+  function render() {
+    distX = targetPos.x - handPos.x;
+    distY = targetPos.y - handPos.y;
+    handPos.x = handPos.x + distX * 0.1;
+    handPos.y = handPos.y + distY * 0.1;
+    hand.style.transform = `
+      translate(${handPos.x - 60}px, ${handPos.y + 30}px)
+    `;
+    requestAnimationFrame(render);
+  }
+  render();
+
   leaflet.addEventListener("click", (e) => {
     let pageElem = getTarget(e.target, "page");
     if (pageElem) {
@@ -83,5 +101,10 @@
     if (backBtn) {
       zoomOut();
     }
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    targetPos.x = e.clientX;
+    targetPos.y = e.clientY;
   });
 })();
