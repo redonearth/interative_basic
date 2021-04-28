@@ -2,6 +2,7 @@
   const leaflet = document.querySelector(".leaflet");
   const pageElems = document.querySelectorAll(".page");
   let pageCount = 0;
+  let currentMenu;
 
   function getTarget(elem, className) {
     while (!elem.classList.contains(className)) {
@@ -41,7 +42,10 @@
         angle = 30;
         break;
     }
+    document.body.classList.add("zoom-in");
     leaflet.style.transform = `translate3d(${dx}px, ${dy}px, 50vw) rotateY(${angle}deg)`;
+    currentMenu = elem;
+    currentMenu.classList.add("current-menu");
   }
 
   leaflet.addEventListener("click", (e) => {
