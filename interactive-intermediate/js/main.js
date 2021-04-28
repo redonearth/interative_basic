@@ -1,4 +1,5 @@
 (() => {
+  const body = document.querySelector("body");
   const hand = document.querySelector(".hand");
   const leaflet = document.querySelector(".leaflet");
   const pageElems = document.querySelectorAll(".page");
@@ -94,7 +95,9 @@
 
     let menuItemElem = getTarget(e.target, "menu-item");
     if (menuItemElem) {
-      zoomIn(menuItemElem);
+      if (!body.classList.contains("zoom-in")) {
+        zoomIn(menuItemElem);
+      }
     }
 
     let backBtn = getTarget(e.target, "back-btn");
