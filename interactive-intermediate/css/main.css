@@ -17,6 +17,7 @@ body {
   height: 30vw;
   margin: auto;
   transform-style: preserve-3d;
+  transition: 1s;
 }
 .page {
   position: absolute;
