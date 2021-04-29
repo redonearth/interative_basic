@@ -36,15 +36,29 @@ body {
   top: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(77, 77, 77, 0.8);
+  background: rgba(45, 45, 45, 0.8);
 }
 .wall-left {
   width: 1000vw;
+  background: #252525;
   transform: rotateY(90deg) translateZ(-500vw);
 }
 .wall-right {
   width: 1000vw;
+  background: #252525;
   transform: rotateY(90deg) translateZ(-400vw);
+}
+.wall-front-a {
+  transform: translateZ(300vw);
+}
+.wall-front-b {
+  transform: translateZ(50vw);
+}
+.wall-front-c {
+  transform: translateZ(-200vw);
+}
+.wall-front-d {
+  transform: translateZ(-500vw);
 }
 .wall-content {
   display: flex;
