@@ -69,3 +69,17 @@ body {
 .wall-title {
   font-size: 5rem;
 }
+.progress-bar-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 5px;
+  background: #555;
+}
+.progress-bar {
+  width: 0;
+  height: 100%;
+  background: #77ff77;
+}
