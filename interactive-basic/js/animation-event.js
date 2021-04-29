@@ -1,15 +1,15 @@
 (() => {
   const ballElem = document.querySelector(".ball");
 
-  window.addEventListener("click", (e) => {
-    ballElem.style.transform = `
-      translate(${e.clientX - 15}px, ${e.clientY - 15}px)
-    `;
+  ballElem.addEventListener("click", (e) => {
+    ballElem.style.animation = "ball-ani 1s 3 forwards";
   });
 
-  ballElem.addEventListener("transitionend", (e) => {
+  ballElem.addEventListener("animationend", () => {
     ballElem.classList.add("end");
-    console.log(e.elapsedTime);
-    console.log(e.propertyName);
+  });
+
+  ballElem.addEventListener("animationiteration", () => {
+    console.log("반복!");
   });
 })();

@@ -1,14 +1,21 @@
+@keyframes ball-ani {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(200px, 200px);
+  }
+}
 .ball {
   position: absolute;
   left: 0;
   top: 0;
   width: 30px;
   height: 30px;
-  /* margin: -15px 0 0 -15px; */
   border-radius: 50%;
   background: red;
-  transition: 1s;
+  /* animation: ball-ani 1s 3 alternate forwards; */
 }
 .ball.end {
-  background: dodgerblue;
+  border: 5px solid dodgerblue;
 }
