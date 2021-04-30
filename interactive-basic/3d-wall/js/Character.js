@@ -33,4 +33,24 @@ function Character(info) {
   document.querySelector('.stage').appendChild(this.mainElem);
 
   this.mainElem.style.left = `${info.xPos}%`;
+  this.scrollState = false;
+  this.init();
 }
+
+Character.prototype = {
+  constructor: Character,
+  init() {
+    window.addEventListener('scroll', () => {
+      clearTimeout(this.scrollState);
+
+      if (!this.scrollState) {
+        this.mainElem.classList.add('walking');
+      }
+
+      this.scrollState = setTimeout(() => {
+        this.scrollState = false;
+        this.mainElem.classList.remove('walking');
+      }, 200);
+    });
+  },
+};
