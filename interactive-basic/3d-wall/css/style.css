@@ -1,3 +1,9 @@
+@keyframes ani-head {
+  to {
+    transform: rotateX(-10deg);
+  }
+}
+
 body {
   height: 500vw;
   font-family: 'Apple SD Gothic Neo', 'Roboto', 'Noto Sans KR', NanumGothic,
@@ -127,13 +133,13 @@ body {
 }
 .character-head {
   left: calc(42 / 856 * 100%);
-  top: 0;
+  top: calc(38 / 1334 * 100%);
   z-index: 60;
   width: calc(770 / 856 * 100%);
   height: calc(648 / 1334 * 100%);
   transform-origin: center bottom;
-  /* animation: ani-moving0 0.6s infinite alternate
-    cubic-bezier(0.46, 0.18, 0.66, 0.93); */
+  animation: ani-head 0.6s infinite alternate
+    cubic-bezier(0.46, 0.18, 0.66, 0.93);
 }
 .character-head-face.face-front {
   background-image: url('../images/ilbuni_head_front.png');
@@ -171,7 +177,7 @@ body {
 .character-arm-right {
   left: 0;
   top: calc(648 / 1334 * 100%);
-  width: calc(244 / 856 * 100%);
+  width: calc(244 / 870 * 100%);
   height: calc(307 / 1334 * 100%);
   transform-origin: right top;
 }
@@ -183,8 +189,8 @@ body {
 }
 .character-leg-left {
   left: calc(414 / 856 * 100%);
-  top: calc(1031 / 1334 * 100%);
-  width: calc(230 / 856 * 100%);
+  top: calc(1030 / 1334 * 100%);
+  width: calc(230 / 870 * 100%);
   height: calc(300 / 1334 * 100%);
   transform-origin: center top;
 }
@@ -196,7 +202,7 @@ body {
 }
 .character-leg-right {
   left: calc(200 / 856 * 100%);
-  top: calc(1031 / 1334 * 100%);
+  top: calc(1030 / 1334 * 100%);
   width: calc(230 / 856 * 100%);
   height: calc(300 / 1334 * 100%);
   transform-origin: center top;
