@@ -119,7 +119,7 @@ body {
   transform: rotateY(180deg);
 }
 .character[data-direction='backward'] {
-  transform: rotateY();
+  transform: rotateY(0deg);
 }
 .character[data-direction='left'] {
   transform: rotateY(-90deg);
