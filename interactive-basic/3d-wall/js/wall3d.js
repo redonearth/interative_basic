@@ -26,5 +26,16 @@
   });
 
   window.addEventListener('resize', resizeHandler);
+
+  window.addEventListener('load', () => {
+    setTimeout(() => scrollTo(0, 0), 100);
+  });
+
+  stageElem.addEventListener('click', (e) => {
+    new Character({
+      xPos: (e.clientX / window.innerWidth) * 100,
+    });
+  });
+
   resizeHandler();
 })();
