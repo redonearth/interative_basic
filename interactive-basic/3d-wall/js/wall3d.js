@@ -1,7 +1,7 @@
 (() => {
-  const stageElem = document.querySelector(".stage");
-  const houseElem = document.querySelector(".house");
-  const progressBarElem = document.querySelector(".progress-bar");
+  const stageElem = document.querySelector('.stage');
+  const houseElem = document.querySelector('.house');
+  const progressBarElem = document.querySelector('.progress-bar');
   const mousePos = { x: 0, y: 0 };
   let maxScrollValue;
 
@@ -9,7 +9,7 @@
     maxScrollValue = document.body.offsetHeight - window.innerHeight;
   }
 
-  window.addEventListener("scroll", () => {
+  window.addEventListener('scroll', () => {
     const scrollRatio = pageYOffset / maxScrollValue;
     const zMove = scrollRatio * 980 - 490;
     houseElem.style.transform = `translateZ(${zMove}vw)`;
@@ -17,7 +17,7 @@
     progressBarElem.style.width = `${scrollRatio * 100}%`;
   });
 
-  window.addEventListener("mousemove", (e) => {
+  window.addEventListener('mousemove', (e) => {
     mousePos.x = -1 + (e.clientX / window.innerWidth) * 2;
     mousePos.y = 1 - (e.clientY / window.innerHeight) * 2;
     stageElem.style.transform = `
@@ -25,6 +25,6 @@
     `;
   });
 
-  window.addEventListener("resize", resizeHandler);
+  window.addEventListener('resize', resizeHandler);
   resizeHandler();
 })();
