@@ -35,6 +35,11 @@ function Character(info) {
   this.mainElem.style.left = `${info.xPos}%`;
   this.scrollState = false;
   this.lastScrollTop = 0;
+  this.xPos = info.xPos;
+  this.speed = info.speed;
+  this.direction;
+  this.walkingState = false;
+  this.rafId;
   this.init();
 }
 
@@ -62,5 +67,46 @@ Character.prototype = {
       }
       this.lastScrollTop = pageYOffset;
     });
+
+    window.addEventListener('keydown', (e) => {
+      if (this.walkingState) return;
+
+      if (e.key === 'ArrowLeft') {
+        this.direction = 'left';
+        this.mainElem.setAttribute('data-direction', 'left');
+        this.mainElem.classList.add('walking');
+        this.walk();
+        this.walkingState = true;
+      } else if (e.key === 'ArrowRight') {
+        this.direction = 'right';
+        this.mainElem.setAttribute('data-direction', 'right');
+        this.mainElem.classList.add('walking');
+        this.walk();
+        this.walkingState = true;
+      }
+    });
+
+    window.addEventListener('keyup', () => {
+      this.mainElem.classList.remove('walking');
+      cancelAnimationFrame(this.rafId);
+      this.walkingState = false;
+    });
+  },
+  walk() {
+    if (this.direction === 'left') {
+      this.xPos -= this.speed;
+    } else if (this.direction === 'right') {
+      this.xPos += this.speed;
+    }
+
+    if (this.xPos < 2) {
+      this.xPos = 2;
+    }
+    if (this.xPos > 88) {
+      this.xPos = 88;
+    }
+    this.mainElem.style.left = `${this.xPos}%`;
+
+    this.rafId = requestAnimationFrame(this.walk.bind(this));
   },
 };
