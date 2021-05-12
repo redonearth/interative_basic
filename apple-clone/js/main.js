@@ -56,7 +56,11 @@
 
   const setLayout = () => {
     for (let i = 0; i < sceneInfo.length; i++) {
-      sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+      if (sceneInfo[i].type === 'sticky') {
+        sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+      } else if (sceneInfo[i].type === 'normal') {
+        sceneInfo[i].scrollHeight = sceneInfo[i].objs.container.offsetHeight;
+      }
       sceneInfo[i].objs.container.style.height = `
         ${sceneInfo[i].scrollHeight}px
       `;
@@ -116,31 +120,31 @@
     switch (currentScene) {
       case 0:
         // console.log('0 play');
-        const messageAOpacityIn = calcValues(
-          values.messageAOpacityIn,
-          currentYOffset
-        );
-        const messageAOpacityOut = calcValues(
-          values.messageAOpacityOut,
-          currentYOffset
-        );
-        const messageATranslateYIn = calcValues(
-          values.messageATranslateYIn,
-          currentYOffset
-        );
-        const messageATranslateYOut = calcValues(
-          values.messageATranslateYOut,
-          currentYOffset
-        );
 
         if (scrollRatio <= 0.22) {
           // in
-          objs.messageA.style.opacity = messageAOpacityIn;
-          objs.messageA.style.transform = `translateY(${messageATranslateYIn}%)`;
+          objs.messageA.style.opacity = calcValues(
+            values.messageAOpacityIn,
+            currentYOffset
+          );
+          objs.messageA.style.transform = `
+            translateY(${calcValues(
+              values.messageATranslateYIn,
+              currentYOffset
+            )}%)
+          `;
         } else {
           // out
-          objs.messageA.style.opacity = messageAOpacityOut;
-          objs.messageA.style.transform = `translateY(${messageATranslateYOut}%)`;
+          objs.messageA.style.opacity = calcValues(
+            values.messageAOpacityOut,
+            currentYOffset
+          );
+          objs.messageA.style.transform = `
+            translateY(${calcValues(
+              values.messageATranslateYOut,
+              currentYOffset
+            )}%)
+          `;
         }
         break;
       case 1:
