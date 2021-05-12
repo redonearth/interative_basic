@@ -112,6 +112,14 @@ a {
   height: 100px;
   background-color: rgb(29, 29, 31);
 }
+#scroll-section-2 .desc-message-a {
+  top: 10%;
+  left: 40%;
+}
+#scroll-section-2 .desc-message-b {
+  top: 15%;
+  left: 45%;
+}
 .mid-message {
   max-width: 1000px;
   margin: 0 auto;
@@ -170,6 +178,13 @@ a {
   }
   .desc-message {
     width: 20%;
+  }
+  #scroll-section-2 .desc-message-a {
+    top: 20%;
+    left: 53%;
+  }
+  #scroll-section-2 .desc-message-b {
+    left: 55%;
   }
   .mid-message {
     font-size: 4vw;
