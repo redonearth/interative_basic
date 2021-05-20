@@ -100,6 +100,18 @@
       objs: {
         container: document.querySelector('#scroll-section-3'),
         canvasCaption: document.querySelector('.canvas-caption'),
+        canvas: document.querySelector('.image-blend-canvas'),
+        context: document.querySelector('.image-blend-canvas').getContext('2d'),
+        imagesPath: [
+          './images/blend-image-1.jpg',
+          './images/blend-image-2.jpg',
+        ],
+        images: [],
+      },
+      values: {
+        rectLeftX: [0, 0, { start: 0, end: 0 }],
+        rectRightX: [0, 0, { start: 0, end: 0 }],
+        rectStartY: 0,
       },
     },
   ];
@@ -117,6 +129,13 @@
       imgElem2 = document.createElement('img');
       imgElem2.src = `./images/002/IMG_${7027 + i}.JPG`;
       sceneInfo[2].objs.videoImages.push(imgElem2);
+    }
+
+    let imgElem3;
+    for (let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++) {
+      imgElem3 = document.createElement('img');
+      imgElem3.src = sceneInfo[3].objs.imagesPath[i];
+      sceneInfo[3].objs.images.push(imgElem3);
     }
   };
   setCanvasImages();
@@ -419,6 +438,58 @@
 
       case 3:
         // console.log('3 play');
+        // 가로/세로 모두 꽉 차게 하기 위해 여기서 설정(계산 필요)
+        const widthRatio = window.innerWidth / objs.canvas.width;
+        const heightRatio = window.innerHeight / objs.canvas.height;
+        let canvasScaleRatio;
+
+        if (widthRatio <= heightRatio) {
+          // 캔버스보다 브라우저 창이 홀쭉한 경우
+          canvasScaleRatio = heightRatio;
+        } else {
+          canvasScaleRatio = widthRatio;
+          // 캔버스보다 브라우저 창이 납작한 경우
+          console.log('widthRatio로 결정');
+        }
+        objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        objs.context.fillStyle = 'white';
+        objs.context.drawImage(objs.images[0], 0, 0);
+
+        // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+        const recalculatedInnerWidth =
+          document.body.offsetWidth / canvasScaleRatio;
+
+        if (!values.rectStartY) {
+          values.rectStartY =
+            objs.canvas.offsetTop +
+            (objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2;
+          values.rectLeftX[2].start = window.innerHeight / 2 / scrollHeight;
+          values.rectRightX[2].start = window.innerHeight / 2 / scrollHeight;
+          values.rectLeftX[2].end = values.rectStartY / scrollHeight;
+          values.rectRightX[2].end = values.rectStartY / scrollHeight;
+        }
+
+        const whiteRectWidth = recalculatedInnerWidth * 0.15;
+        values.rectLeftX[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+        values.rectLeftX[1] = values.rectLeftX[0] - whiteRectWidth;
+        values.rectRightX[0] =
+          values.rectLeftX[0] + recalculatedInnerWidth - whiteRectWidth;
+        values.rectRightX[1] = values.rectRightX[0] + whiteRectWidth;
+
+        // 좌우 흰색 박스 그리기
+        objs.context.fillRect(
+          parseInt(calcValues(values.rectLeftX, currentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height
+        );
+        objs.context.fillRect(
+          parseInt(calcValues(values.rectRightX, currentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height
+        );
+
         break;
     }
   };
