@@ -113,6 +113,7 @@
         rectRightX: [0, 0, { start: 0, end: 0 }],
         rectStartY: 0,
         blendHeight: [0, 0, { start: 0, end: 0 }],
+        canvasScale: [0, 0, { start: 0, end: 0 }],
       },
     },
   ];
@@ -571,6 +572,19 @@
               -(objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2
             }px
           `;
+
+          if (scrollRatio > values.blendHeight[2].end) {
+            values.canvasScale[0] = canvasScaleRatio;
+            values.canvasScale[1] =
+              document.body.offsetWidth / (objs.canvas.width * 1.5);
+            console.log(values.canvasScale[0], values.canvasScale[1]);
+            values.canvasScale[2].start = values.blendHeight[2].end;
+            values.canvasScale[2].end = values.canvasScale[2].start + 0.2;
+
+            objs.canvas.style.transform = `
+              scale(${calcValues(values.canvasScale, currentYOffset)})
+            `;
+          }
         }
 
         break;
