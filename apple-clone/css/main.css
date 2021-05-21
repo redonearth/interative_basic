@@ -171,8 +171,9 @@ a {
   top: 50%;
   left: 50%;
 }
-.image-blend-canvas {
-  margin-top: 15vw;
+.image-blend-canvas.sticky-img {
+  position: fixed;
+  top: 0;
 }
 #scroll-section-3 {
   display: flex;
