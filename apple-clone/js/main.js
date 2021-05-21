@@ -138,7 +138,6 @@
       sceneInfo[3].objs.images.push(imgElem3);
     }
   };
-  setCanvasImages();
 
   const setLayout = () => {
     for (let i = 0; i < sceneInfo.length; i++) {
@@ -434,6 +433,53 @@
           `;
         }
 
+        // currentScene 3에서 쓰는 캔버스를 미리 그려주기 시작
+        if (scrollRatio > 0.9) {
+          const objs = sceneInfo[3].objs;
+          const values = sceneInfo[3].values;
+          const widthRatio = window.innerWidth / objs.canvas.width;
+          const heightRatio = window.innerHeight / objs.canvas.height;
+          let canvasScaleRatio;
+
+          if (widthRatio <= heightRatio) {
+            // 캔버스보다 브라우저 창이 홀쭉한 경우
+            canvasScaleRatio = heightRatio;
+          } else {
+            canvasScaleRatio = widthRatio;
+            // 캔버스보다 브라우저 창이 납작한 경우
+            console.log('widthRatio로 결정');
+          }
+          objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+          objs.context.fillStyle = 'white';
+          objs.context.drawImage(objs.images[0], 0, 0);
+
+          // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+          const recalculatedInnerWidth =
+            document.body.offsetWidth / canvasScaleRatio;
+
+          const whiteRectWidth = recalculatedInnerWidth * 0.15;
+          values.rectLeftX[0] =
+            (objs.canvas.width - recalculatedInnerWidth) / 2;
+          values.rectLeftX[1] = values.rectLeftX[0] - whiteRectWidth;
+          values.rectRightX[0] =
+            values.rectLeftX[0] + recalculatedInnerWidth - whiteRectWidth;
+          values.rectRightX[1] = values.rectRightX[0] + whiteRectWidth;
+
+          // 좌우 흰색 박스 그리기
+          objs.context.fillRect(
+            parseInt(values.rectLeftX[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height
+          );
+          objs.context.fillRect(
+            parseInt(values.rectRightX[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height
+          );
+        }
+
         break;
 
       case 3:
@@ -523,5 +569,13 @@
     setLayout();
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
   });
-  window.addEventListener('resize', setLayout);
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 600) {
+      setLayout();
+    }
+    sceneInfo[3].values.rectStartY = 0;
+  });
+  window.addEventListener('orientationchange', setLayout);
+
+  setCanvasImages();
 })();
