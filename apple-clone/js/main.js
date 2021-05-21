@@ -447,9 +447,8 @@
             // 캔버스보다 브라우저 창이 홀쭉한 경우
             canvasScaleRatio = heightRatio;
           } else {
-            canvasScaleRatio = widthRatio;
             // 캔버스보다 브라우저 창이 납작한 경우
-            console.log('widthRatio로 결정');
+            canvasScaleRatio = widthRatio;
           }
           objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
           objs.context.fillStyle = 'white';
@@ -577,13 +576,18 @@
             values.canvasScale[0] = canvasScaleRatio;
             values.canvasScale[1] =
               document.body.offsetWidth / (objs.canvas.width * 1.5);
-            console.log(values.canvasScale[0], values.canvasScale[1]);
             values.canvasScale[2].start = values.blendHeight[2].end;
             values.canvasScale[2].end = values.canvasScale[2].start + 0.2;
 
             objs.canvas.style.transform = `
               scale(${calcValues(values.canvasScale, currentYOffset)})
             `;
+            objs.canvas.style.marginTop = 0;
+
+            if (scrollRatio > values.canvasScale[2].end) {
+              objs.canvas.classList.remove('sticky-img');
+              objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
+            }
           }
         }
 
