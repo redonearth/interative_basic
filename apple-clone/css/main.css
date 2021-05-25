@@ -137,7 +137,7 @@ a {
 }
 .canvas-caption {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: -8em auto 0;
   font-size: 1.2rem;
   color: #888;
 }
@@ -182,6 +182,11 @@ a {
 }
 
 @media (min-width: 1024px) {
+  .description,
+  .mid-message,
+  .canvas-caption {
+    padding: 0;
+  }
   #scroll-section-0 h1 {
     font-size: 9vw;
   }
@@ -211,6 +216,7 @@ a {
     left: 55%;
   }
   .mid-message {
+    width: 1000px;
     font-size: 4vw;
   }
   .canvas-caption {

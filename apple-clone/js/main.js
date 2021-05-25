@@ -114,6 +114,8 @@
         rectStartY: 0,
         blendHeight: [0, 0, { start: 0, end: 0 }],
         canvasScale: [0, 0, { start: 0, end: 0 }],
+        canvasCaptionOpacity: [0, 1, { start: 0, end: 0 }],
+        canvasCaptionTranslateY: [20, 0, { start: 0, end: 0 }],
       },
     },
   ];
@@ -587,6 +589,26 @@
             if (scrollRatio > values.canvasScale[2].end) {
               objs.canvas.classList.remove('sticky-img');
               objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
+
+              values.canvasCaptionOpacity[2].start = values.canvasScale[2].end;
+              values.canvasCaptionOpacity[2].end =
+                values.canvasScale[2].start + 0.1;
+              values.canvasCaptionTranslateY[2].start =
+                values.canvasCaptionOpacity[2].start;
+              values.canvasCaptionTranslateY[2].end =
+                values.canvasCaptionOpacity[2].end;
+              objs.canvasCaption.style.opacity = calcValues(
+                values.canvasCaptionOpacity,
+                currentYOffset
+              );
+              objs.canvasCaption.style.transform = `
+                translate3d(0, ${calcValues(
+                  values.canvasCaptionTranslateY,
+                  currentYOffset
+                )}%, 0)
+              `;
+            } else {
+              objs.canvasCaption.style.opacity = values.canvasCaptionOpacity[0];
             }
           }
         }
