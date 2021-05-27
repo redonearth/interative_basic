@@ -112,6 +112,10 @@
         rectLeftX: [0, 0, { start: 0, end: 0 }],
         rectRightX: [0, 0, { start: 0, end: 0 }],
         rectStartY: 0,
+        blendHeight: [0, 0, { start: 0, end: 0 }],
+        canvasScale: [0, 0, { start: 0, end: 0 }],
+        canvasCaptionOpacity: [0, 1, { start: 0, end: 0 }],
+        canvasCaptionTranslateY: [20, 0, { start: 0, end: 0 }],
       },
     },
   ];
@@ -138,7 +142,14 @@
       sceneInfo[3].objs.images.push(imgElem3);
     }
   };
-  setCanvasImages();
+
+  const checkMenu = () => {
+    if (yOffset > 44) {
+      document.body.classList.add('local-nav-sticky');
+    } else {
+      document.body.classList.remove('local-nav-sticky');
+    }
+  };
 
   const setLayout = () => {
     for (let i = 0; i < sceneInfo.length; i++) {
@@ -434,10 +445,58 @@
           `;
         }
 
+        // currentScene 3에서 쓰는 캔버스를 미리 그려주기 시작
+        if (scrollRatio > 0.9) {
+          const objs = sceneInfo[3].objs;
+          const values = sceneInfo[3].values;
+          const widthRatio = window.innerWidth / objs.canvas.width;
+          const heightRatio = window.innerHeight / objs.canvas.height;
+          let canvasScaleRatio;
+
+          if (widthRatio <= heightRatio) {
+            // 캔버스보다 브라우저 창이 홀쭉한 경우
+            canvasScaleRatio = heightRatio;
+          } else {
+            // 캔버스보다 브라우저 창이 납작한 경우
+            canvasScaleRatio = widthRatio;
+          }
+          objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+          objs.context.fillStyle = 'white';
+          objs.context.drawImage(objs.images[0], 0, 0);
+
+          // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+          const recalculatedInnerWidth =
+            document.body.offsetWidth / canvasScaleRatio;
+
+          const whiteRectWidth = recalculatedInnerWidth * 0.15;
+          values.rectLeftX[0] =
+            (objs.canvas.width - recalculatedInnerWidth) / 2;
+          values.rectLeftX[1] = values.rectLeftX[0] - whiteRectWidth;
+          values.rectRightX[0] =
+            values.rectLeftX[0] + recalculatedInnerWidth - whiteRectWidth;
+          values.rectRightX[1] = values.rectRightX[0] + whiteRectWidth;
+
+          // 좌우 흰색 박스 그리기
+          objs.context.fillRect(
+            parseInt(values.rectLeftX[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height
+          );
+          objs.context.fillRect(
+            parseInt(values.rectRightX[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height
+          );
+        }
+
         break;
 
       case 3:
         // console.log('3 play');
+        let step = 0;
+
         // 가로/세로 모두 꽉 차게 하기 위해 여기서 설정(계산 필요)
         const widthRatio = window.innerWidth / objs.canvas.width;
         const heightRatio = window.innerHeight / objs.canvas.height;
@@ -490,6 +549,78 @@
           objs.canvas.height
         );
 
+        if (scrollRatio < values.rectLeftX[2].end) {
+          // 캔버스가 브라우저 상단에 닿지 않았다면
+          step = 1;
+          objs.canvas.classList.remove('sticky-img');
+        } else {
+          step = 2;
+
+          // 이미지 블렌드
+          values.blendHeight[0] = 0;
+          values.blendHeight[1] = objs.canvas.height;
+          values.blendHeight[2].start = values.rectLeftX[2].end;
+          values.blendHeight[2].end = values.blendHeight[2].start + 0.2;
+          const blendHeight = calcValues(values.blendHeight, currentYOffset);
+
+          objs.context.drawImage(
+            objs.images[1],
+            0,
+            objs.canvas.height - blendHeight,
+            objs.canvas.width,
+            blendHeight,
+            0,
+            objs.canvas.height - blendHeight,
+            objs.canvas.width,
+            blendHeight
+          );
+
+          objs.canvas.classList.add('sticky-img');
+          objs.canvas.style.top = `
+            ${
+              -(objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2
+            }px
+          `;
+
+          if (scrollRatio > values.blendHeight[2].end) {
+            values.canvasScale[0] = canvasScaleRatio;
+            values.canvasScale[1] =
+              document.body.offsetWidth / (objs.canvas.width * 1.5);
+            values.canvasScale[2].start = values.blendHeight[2].end;
+            values.canvasScale[2].end = values.canvasScale[2].start + 0.2;
+
+            objs.canvas.style.transform = `
+              scale(${calcValues(values.canvasScale, currentYOffset)})
+            `;
+            objs.canvas.style.marginTop = 0;
+
+            if (scrollRatio > values.canvasScale[2].end) {
+              objs.canvas.classList.remove('sticky-img');
+              objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
+
+              values.canvasCaptionOpacity[2].start = values.canvasScale[2].end;
+              values.canvasCaptionOpacity[2].end =
+                values.canvasScale[2].start + 0.1;
+              values.canvasCaptionTranslateY[2].start =
+                values.canvasCaptionOpacity[2].start;
+              values.canvasCaptionTranslateY[2].end =
+                values.canvasCaptionOpacity[2].end;
+              objs.canvasCaption.style.opacity = calcValues(
+                values.canvasCaptionOpacity,
+                currentYOffset
+              );
+              objs.canvasCaption.style.transform = `
+                translate3d(0, ${calcValues(
+                  values.canvasCaptionTranslateY,
+                  currentYOffset
+                )}%, 0)
+              `;
+            } else {
+              objs.canvasCaption.style.opacity = values.canvasCaptionOpacity[0];
+            }
+          }
+        }
+
         break;
     }
   };
@@ -518,10 +649,19 @@
   window.addEventListener('scroll', () => {
     yOffset = window.pageYOffset;
     scrollLoop();
+    checkMenu();
   });
   window.addEventListener('load', () => {
     setLayout();
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
   });
-  window.addEventListener('resize', setLayout);
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 600) {
+      setLayout();
+    }
+    sceneInfo[3].values.rectStartY = 0;
+  });
+  window.addEventListener('orientationchange', setLayout);
+
+  setCanvasImages();
 })();
