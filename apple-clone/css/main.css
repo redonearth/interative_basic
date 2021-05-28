@@ -136,6 +136,7 @@ body.before-load {
 #scroll-section-2 .desc-message-a {
   top: 10%;
   left: 40%;
+  max-width: 50%;
 }
 #scroll-section-2 .desc-message-b {
   top: 15%;
@@ -178,6 +179,9 @@ body.before-load {
   display: block;
   will-change: transform, opacity;
 }
+.scroll-effect-end .sticky-elem {
+  display: none !important;
+}
 .sticky-elem-canvas {
   top: 0;
   height: 100%;
@@ -195,6 +199,9 @@ body.before-load {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#scroll-section-3 .mid-message:first-child {
+  margin-bottom: 14rem;
 }
 .loading {
   display: flex;
@@ -262,6 +269,9 @@ body.before-load {
   stroke-dashoffset: -157;
   fill: transparent;
   animation: loading-circle-ani 1s infinite, loading-circle-color 4s infinite;
+}
+.normal-content {
+  margin-bottom: 10rem;
 }
 
 @media (min-width: 1024px) {
