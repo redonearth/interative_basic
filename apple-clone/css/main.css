@@ -136,6 +136,7 @@ body.before-load {
 #scroll-section-2 .desc-message-a {
   top: 10%;
   left: 40%;
+  max-width: 50%;
 }
 #scroll-section-2 .desc-message-b {
   top: 15%;
@@ -198,6 +199,9 @@ body.before-load {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+#scroll-section-3 .mid-message:first-child {
+  margin-bottom: 14rem;
 }
 .loading {
   display: flex;
