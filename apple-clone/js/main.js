@@ -510,9 +510,8 @@
           // 캔버스보다 브라우저 창이 홀쭉한 경우
           canvasScaleRatio = heightRatio;
         } else {
-          canvasScaleRatio = widthRatio;
           // 캔버스보다 브라우저 창이 납작한 경우
-          console.log('widthRatio로 결정');
+          canvasScaleRatio = widthRatio;
         }
         objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
         objs.context.fillStyle = 'white';
