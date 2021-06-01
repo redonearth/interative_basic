@@ -45,7 +45,6 @@
         messageCTranslateYOut: [0, -20, { start: 0.65, end: 0.7 }],
         messageDTranslateYOut: [0, -20, { start: 0.85, end: 0.9 }],
       },
-      finishedLoadingImages: false,
     },
     {
       // 1
@@ -96,7 +95,6 @@
         pinAScaleY: [0.5, 1, { start: 0.5, end: 0.55 }],
         pinBScaleY: [0.5, 1, { start: 0.72, end: 0.77 }],
       },
-      finishedLoadingImages: false,
     },
     {
       // 3
@@ -126,94 +124,26 @@
     },
   ];
 
-  let totalImages = 0;
-  const scene0Images = [];
-  const scene2Images = [];
-
-  const loadImagesOfScene0 = () => {
-    if (sceneInfo[0].finishedLoadingImages) return;
-
-    let numberOfLoadedImages = 0;
+  const setCanvasImages = () => {
+    let imgElem;
     for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
-      let imgElem = document.createElement('img');
+      imgElem = document.createElement('img');
       imgElem.src = `./images/001/IMG_${6726 + i}.JPG`;
-      imgElem.addEventListener('load', () => {
-        scene0Images.push(imgElem);
-        numberOfLoadedImages++;
-
-        totalImages++;
-
-        if (numberOfLoadedImages === sceneInfo[0].values.videoImageCount) {
-          sceneInfo[0].finishedLoadingImages = true;
-          // console.log('Scene 0 이미지 로드 완료');
-          // console.log(`로드된 이미지 총 개수 : ${totalImages}`);
-          setImagesOfScene0();
-          initAfterLoadImages();
-
-          if (!sceneInfo[2].finishedLoadingImages) {
-            loadImagesOfScene2();
-          }
-        }
-      });
+      sceneInfo[0].objs.videoImages.push(imgElem);
     }
-  };
 
-  const loadImagesOfScene2 = () => {
-    if (sceneInfo[2].finishedLoadingImages) return;
-
-    let numberOfLoadedImages = 0;
+    let imgElem2;
     for (let i = 0; i < sceneInfo[2].values.videoImageCount; i++) {
-      let imgElem = document.createElement('img');
-      imgElem.src = `./images/002/IMG_${7027 + i}.JPG`;
-      imgElem.addEventListener('load', () => {
-        scene2Images.push(imgElem);
-        numberOfLoadedImages++;
-
-        totalImages++;
-
-        if (numberOfLoadedImages === sceneInfo[2].values.videoImageCount) {
-          sceneInfo[2].finishedLoadingImages = true;
-          // console.log('Scene 2 이미지 로드 완료');
-          // console.log(`로드된 이미지 총 개수 : ${totalImages}`);
-          setImagesOfScene2();
-          initAfterLoadImages();
-
-          if (!sceneInfo[0].finishedLoadingImages) {
-            loadImagesOfScene0();
-          }
-        }
-      });
+      imgElem2 = document.createElement('img');
+      imgElem2.src = `./images/002/IMG_${7027 + i}.JPG`;
+      sceneInfo[2].objs.videoImages.push(imgElem2);
     }
-  };
 
-  const sortImages = (imageArray) => {
-    let temp;
-    let imageNumber1;
-    let imageNumber2;
-    for (let i = 0; i < imageArray.length; i++) {
-      for (let j = 0; j < imageArray.length - i; j++) {
-        if (j < imageArray.length - 1) {
-          imageNumber1 = getImageNumber(imageArray[j].currentSrc);
-          imageNumber2 = getImageNumber(imageArray[j + 1].currentSrc);
-          if (imageNumber1 > imageNumber2) {
-            temp = imageArray[j];
-            imageArray[j] = imageArray[j + 1];
-            imageArray[j + 1] = temp;
-          }
-        }
-      }
-    }
-  };
-
-  const setImagesOfScene0 = () => {
-    for (let i = 0; i < scene0Images.length; i++) {
-      sceneInfo[0].objs.videoImages.push(scene0Images[i]);
-    }
-  };
-
-  const setImagesOfScene2 = () => {
-    for (let i = 0; i < scene2Images.length; i++) {
-      sceneInfo[2].objs.videoImages.push(scene2Images[i]);
+    let imgElem3;
+    for (let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++) {
+      imgElem3 = document.createElement('img');
+      imgElem3.src = sceneInfo[3].objs.imagesPath[i];
+      sceneInfo[3].objs.images.push(imgElem3);
     }
   };
 
@@ -750,23 +680,6 @@
       }
     }
 
-    if (delayedYOffset < 1) {
-      scrollLoop();
-      sceneInfo[0].objs.canvas.style.opacity = 1;
-      if (sceneInfo[0].objs.videoImages[0]) {
-        sceneInfo[0].objs.context.drawImage(
-          sceneInfo[0].objs.videoImages[0],
-          0,
-          0
-        );
-      }
-    }
-
-    if (document.body.offsetHeight - window.innerHeight - delayedYOffset < 1) {
-      let tempYOffset = yOffset;
-      scrollTo(0, tempYOffset - 1);
-    }
-
     rafId = requestAnimationFrame(loop);
 
     if (Math.abs(yOffset - delayedYOffset) < 1) {
@@ -775,48 +688,11 @@
     }
   };
 
-  const initAfterLoadImages = () => {
-    if (currentScene !== 2 && sceneInfo[0].objs.videoImages[0]) {
-      sceneInfo[0].objs.context.drawImage(
-        sceneInfo[0].objs.videoImages[0],
-        0,
-        0
-      );
-    }
-
-    let tempYOffset = yOffset;
-    let tempScrollCount = 0;
-    if (tempYOffset > 0) {
-      let siId = setInterval(() => {
-        scrollTo(0, tempYOffset);
-        tempYOffset += 5;
-
-        if (tempScrollCount > 20) {
-          clearInterval(siId);
-        }
-        tempScrollCount++;
-      }, 20);
-    }
-  };
-
-  window.addEventListener('DOMContentLoaded', () => {
-    // console.log('DOMContentLoaded!');
+  window.addEventListener('load', () => {
     setLayout();
     document.body.classList.remove('before-load');
     setLayout();
-
-    let imgElem;
-    for (let i = 0; i < sceneInfo[3].objs.imagesPath.length; i++) {
-      imgElem = document.createElement('img');
-      imgElem.src = sceneInfo[3].objs.imagesPath[i];
-      sceneInfo[3].objs.images.push(imgElem);
-    }
-
-    if (currentScene !== 2) {
-      loadImagesOfScene0();
-    } else {
-      loadImagesOfScene2();
-    }
+    sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
 
     let tempYOffset = yOffset;
     let tempScrollCount = 0;
@@ -856,9 +732,9 @@
     document
       .querySelector('.loading')
       .addEventListener('transitionend', (e) => {
-        if (e.currentTarget.parentNode === document.body) {
-          document.body.removeChild(e.currentTarget);
-        }
+        document.body.removeChild(e.currentTarget);
       });
   });
+
+  setCanvasImages();
 })();
